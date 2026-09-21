@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Flores Amarillas Para Ti 💛</title>
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    body {
+      /* Fondo animado */
+      background: linear-gradient(-45deg, #fffde7, #fff9c4, #fff176, #ffecb3);
+      background-size: 400% 400%;
+      animation: gradientBG 10s ease infinite;
+      font-family: 'Poppins', sans-serif;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      overflow-x: hidden;
+      padding: 20px;
+      color: #4a3b00;
+    }
+    @keyframes gradientBG {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+    .container {
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(10px);
+      border-radius: 24px;
+      padding: 35px 25px;
+      max-width: 440px;
+      width: 100%;
+      text-align: center;
+      box-shadow: 0 15px 35px rgba(218, 165, 32, 0.25);
+      border: 2px solid #ffe082;
+      position: relative;
+      z-index: 10;
+    }
+    h1 {
+      font-family: 'Caveat', cursive;
+      font-size: 2.6rem;
+      color: #d89b00;
+      margin-bottom: 10px;
+      line-height: 1.1;
+    }
+    p.subtitle {
+      font-size: 0.95rem;
+      color: #6c5b10;
+      margin-bottom: 25px;
+      line-height: 1.5;
+    }
+    .flower-illustration {
+      width: 140px;
+      height: 140px;
+      margin: 0 auto 20px;
+      /* Animación de balanceo de la flor */
+      animation: sway 3s ease-in-out infinite alternate;
+    }
+    @keyframes sway {
+      0% { transform: rotate(-8deg) scale(1); }
+      100% { transform: rotate(8deg) scale(1.05); }
+    }
+    .btn-action {
+      background: linear-gradient(45deg, #ffd54f, #ffb300);
+      border: none;
+      color: #3e2723;
+      font-family: 'Poppins', sans-serif;
+      font-weight: 600;
+      font-size: 1rem;
+      padding: 14px 28px;
+      border-radius: 50px;
+      cursor: pointer;
+      /* Botón que brilla */
+      animation: glowing 2s infinite;
+      transition: all 0.3s ease;
+      outline: none;
+    }
+    @keyframes glowing {
+      0% { box-shadow: 0 0 5px #ffca28; }
+      50% { box-shadow: 0 0 20px #ffb300, 0 0 30px #ffca28; }
+      100% { box-shadow: 0 0 5px #ffca28; }
+    }
+    .btn-action:hover {
+      transform: translateY(-3px) scale(1.05);
+    }
+    .btn-action:active {
+      transform: translateY(1px);
+    }
+    .card-message {
+      display: none;
+      margin-top: 25px;
+      padding: 22px;
+      background: #fffbe6;
+      border-left: 4px solid #ffca28;
+      border-radius: 14px;
+      text-align: left;
+      /* Aparición suave desde abajo */
+      animation: slideUpFade 1s ease forwards;
+    }
+    @keyframes slideUpFade {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .card-message h2 {
+      font-family: 'Caveat', cursive;
+      font-size: 2rem;
+      color: #b78103;
+      margin-bottom: 12px;
+    }
+    .card-message p {
+      font-size: 0.95rem;
+      line-height: 1.6;
+      color: #5d4037;
+    }
+    .highlight {
+      font-weight: 600;
+      color: #d84315;
+    }
+    .footer-heart {
+      margin-top: 22px;
+      font-size: 0.85rem;
+      color: #a08218;
+      animation: heartbeat 1.5s infinite;
+    }
+    @keyframes heartbeat {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.1); color: #d32f2f; }
+    }
+    .petal {
+      position: fixed;
+      top: -10%;
+      pointer-events: none;
+      z-index: 1;
+      animation: fall linear forwards;
+    }
+    @keyframes fall {
+      to {
+        transform: translateY(105vh) rotate(720deg);
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <h1>¡Feliz Día! 🌼</h1>
+    <p class="subtitle">Estas no se marchitan y están hechas especialmente para ti.</p>
+
+    <!-- Ilustración de Flor -->
+    <div class="flower-illustration">
+      <svg viewBox="0 0 100 100" width="100%" height="100%">
+        <path d="M50,50 Q48,75 50,95" stroke="#7cb342" stroke-width="4" fill="none"/>
+        <path d="M50,70 Q35,65 30,55 Q42,58 50,70" fill="#8bc34a"/>
+        <path d="M50,78 Q65,73 70,63 Q58,66 50,78" fill="#8bc34a"/>
+        <g fill="#ffd54f" stroke="#fbc02d" stroke-width="1">
+          <circle cx="50" cy="30" r="12" />
+          <circle cx="64" cy="36" r="12" />
+          <circle cx="70" cy="50" r="12" />
+          <circle cx="64" cy="64" r="12" />
+          <circle cx="50" cy="70" r="12" />
+          <circle cx="36" cy="64" r="12" />
+          <circle cx="30" cy="50" r="12" />
+          <circle cx="36" cy="36" r="12" />
+        </g>
+        <g fill="#ffe082">
+          <circle cx="50" cy="33" r="10" />
+          <circle cx="62" cy="38" r="10" />
+          <circle cx="67" cy="50" r="10" />
+          <circle cx="62" cy="62" r="10" />
+          <circle cx="50" cy="67" r="10" />
+          <circle cx="38" cy="62" r="10" />
+          <circle cx="33" cy="50" r="10" />
+          <circle cx="38" cy="38" r="10" />
+        </g>
+        <circle cx="50" cy="50" r="12" fill="#ff8f00" />
+        <circle cx="50" cy="50" r="9" fill="#ff6f00" />
+      </svg>
+    </div>
+
+    <button class="btn-action" onclick="mostrarSorpresa()" id="btn-regalo">Toca aquí mi amor 💛</button>
+
+    <div class="card-message" id="mensaje">
+      <h2>Para mi niña hermosa ✨</h2>
+      <p>
+        No quería dejar pasar este día sin entregarte tus flores amarillas.<br><br>
+        Desde que llegaste a mi vida me has hecho la persona más feliz del mundo. Sé que llevamos poco tiempo, pero <strong>siento con todo mi corazón que eres el amor de mi vida</strong> y quiero estar siempre contigo.<br><br>
+        Espero que esta pequeña sorpresa te saque una sonrisa tan hermosa como tú.<br><br>
+        <span class="highlight">Te amo muchísimo.</span> 🌻
+      </p>
+    </div>
+
+    <div class="footer-heart">
+      Hecho con mucho amor para ti ❤️
+    </div>
+  </div>
+
+  <script>
+    function crearPetalo() {
+      const petalo = document.createElement('div');
+      petalo.classList.add('petal');
+      
+      const simbolos = ['🌼', '🌻', '✨', '💛', '💖'];
+      petalo.innerText = simbolos[Math.floor(Math.random() * simbolos.length)];
+      
+      petalo.style.left = Math.random() * 100 + 'vw';
+      petalo.style.animationDuration = (Math.random() * 3 + 2.5) + 's';
+      petalo.style.fontSize = (Math.random() * 14 + 16) + 'px';
+      
+      document.body.appendChild(petalo);
+
+      setTimeout(() => {
+        petalo.remove();
+      }, 5500);
+    }
+
+    function mostrarSorpresa() {
+      const msg = document.getElementById('mensaje');
+      const btn = document.getElementById('btn-regalo');
+      
+      // Ocultar botón y mostrar mensaje
+      btn.style.display = 'none';
+      msg.style.display = 'block';
+
+      // Lluvia inicial intensa de flores y corazones
+      for (let i = 0; i < 40; i++) {
+        setTimeout(crearPetalo, i * 80);
+      }
+
+      // Caída continua y suave
+      setInterval(crearPetalo, 400);
+    }
+  </script>
+</body>
+</html>
