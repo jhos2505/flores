@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>Nuestra Galaxia de Amor 💛</title>
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      user-select: none;
+      -webkit-user-select: none;
+    }
+    body, html {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background: #05030a;
+      font-family: 'Poppins', sans-serif;
+      color: #fff;
+    }
+    #canvas-container {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 1;
+    }
+    canvas {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+    /* Interfaz de usuario */
+    .ui-header {
+      position: absolute;
+      top: 25px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 10;
+      text-align: center;
+      width: 90%;
+      max-width: 500px;
+      pointer-events: none;
+    }
+    .ui-header h1 {
+      font-family: 'Caveat', cursive;
+      font-size: 2.5rem;
+      color: #ffe082;
+      text-shadow: 0 0 15px rgba(255, 213, 79, 0.8), 0 0 30px rgba(255, 179, 0, 0.5);
+    }
+    .ui-header p {
+      font-size: 0.85rem;
+      color: #d1c4e9;
+      opacity: 0.9;
+      margin-top: 4px;
+    }
+    .ui-footer {
+      position: absolute;
+      bottom: 30px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 10;
+      text-align: center;
+      width: 90%;
+      max-width: 400px;
+    }
+    .btn-main {
+      background: linear-gradient(45deg, #ffd54f, #ffb300);
+      border: none;
+      color: #3e2723;
+      font-family: 'Poppins', sans-serif;
+      font-weight: 600;
+      font-size: 1rem;
+      padding: 14px 28px;
+      border-radius: 50px;
+      cursor: pointer;
+      box-shadow: 0 0 20px rgba(255, 213, 79, 0.6), 0 0 40px rgba(255, 179, 0, 0.4);
+      animation: pulseGlow 2s infinite;
+      transition: transform 0.2s ease;
+    }
+    @keyframes pulseGlow {
+      0%, 100% { transform: scale(1); box-shadow: 0 0 20px rgba(255, 213, 79, 0.6); }
+      50% { transform: scale(1.05); box-shadow: 0 0 35px rgba(255, 213, 79, 0.9); }
+    }
+    .btn-main:active {
+      transform: scale(0.98);
+    }
+
+    /* Modal / Carta de Amor */
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(5, 3, 10, 0.85);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      z-index: 100;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.5s ease;
+      padding: 20px;
+    }
+    .modal-overlay.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+    .modal-card {
+      background: rgba(30, 20, 50, 0.85);
+      border: 2px solid #ffe082;
+      box-shadow: 0 0 30px rgba(255, 224, 130, 0.3), inset 0 0 20px rgba(255, 224, 130, 0.1);
+      border-radius: 24px;
+      padding: 30px 25px;
+      max-width: 440px;
+      width: 100%;
+      max-height: 85vh;
+      overflow-y: auto;
+      text-align: center;
+      transform: scale(0.8) translateY(20px);
+      transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      position: relative;
+    }
+    .modal-overlay.active .modal-card {
+      transform: scale(1) translateY(0);
+    }
+    .close-btn {
+      position: absolute;
+      top: 15px;
+      right: 18px;
+      background: rgba(255, 255, 255, 0.1);
+      border: none;
+      color: #ffe082;
+      font-size: 1.5rem;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      cursor: pointer;
+    }
+    .modal-card h2 {
+      font-family: 'Caveat', cursive;
+      font-size: 2.4rem;
+      color: #ffd54f;
+      margin-bottom: 15px;
+      text-shadow: 0 0 10px rgba(255, 213, 79, 0.5);
+    }
+    .modal-card p {
+      font-size: 0.95rem;
+      line-height: 1.7;
+      color: #f3e5f5;
+      text-align: left;
+    }
+    .highlight {
+      color: #ffe082;
+      font-weight: 600;
+    }
+    .signature {
+      margin-top: 20px;
+      font-family: 'Caveat', cursive;
+      font-size: 1.8rem;
+      color: #ffb300;
+      text-align: center;
+    }
+
+    /* Pétalos flotando en el espacio */
+    .petal {
+      position: fixed;
+      top: -10%;
+      pointer-events: none;
+      z-index: 101;
+      animation: fall linear forwards;
+    }
+    @keyframes fall {
+      to {
+        transform: translateY(110vh) rotate(720deg);
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div id="canvas-container">
+    <canvas id="galaxyCanvas"></canvas>
+  </div>
+
+  <div class="ui-header">
+    <h1>Nuestra Galaxia 🪐✨</h1>
+    <p>Gira el universo con tu dedo y toca los planetas 💛</p>
+  </div>
+
+  <div class="ui-footer">
+    <button class="btn-main" onclick="openCarta()">Toca aquí mi amor 🌼</button>
+  </div>
+
+  <!-- Modal / Carta de Amor -->
+  <div class="modal-overlay" id="modalOverlay">
+    <div class="modal-card">
+      <button class="close-btn" onclick="closeCarta()">×</button>
+      <h2>Para mi niña hermosa ✨</h2>
+      <p>
+        ¡Feliz Día de las Flores Amarillas! 🌼<br><br>
+        No quería dejar pasar este día sin entregarte tus flores amarillas, así que te construí un universo entero donde cada estrella y planeta lleva lo que siento por ti.<br><br>
+        Desde que llegaste a mi vida me has hecho la persona más feliz del mundo. Sé que llevamos poco tiempo, pero <span class="highlight">siento con todo mi corazón que eres el amor de mi vida</span> y quiero estar siempre contigo.<br><br>
+        Espero que esta galaxia hecha a mano te saque una sonrisa tan hermosa como tú.
+      </p>
+      <div class="signature">Te amo muchísimo. 🌻</div>
+    </div>
+  </div>
+
+  <script>
+    const canvas = document.getElementById('galaxyCanvas');
+    const ctx = canvas.getContext('2d');
+
+    let width, height;
+    function resize() {
+      width = canvas.width = window.innerWidth;
+      height = canvas.height = window.innerHeight;
+    }
+    window.addEventListener('resize', resize);
+    resize();
+
+    // Palabras / Planetas flotantes
+    const wordList = [
+      { text: "Mi Amor 💖", color: "#ff80ab", radius: 180, speed: 0.008, angle: 0, tilt: 0.3, size: 7 },
+      { text: "Mi Universo 🌌", color: "#80d8ff", radius: 240, speed: 0.006, angle: 1.2, tilt: -0.2, size: 9 },
+      { text: "Amor de mi vida 💛", color: "#ffd54f", radius: 140, speed: 0.012, angle: 2.5, tilt: 0.4, size: 10 },
+      { text: "Mi Niña Hermosa ✨", color: "#ea80fc", radius: 300, speed: 0.005, angle: 0.8, tilt: -0.4, size: 8 },
+      { text: "Siempre Juntos ♾️", color: "#b9f6ca", radius: 210, speed: 0.009, angle: 3.8, tilt: 0.1, size: 8 },
+      { text: "Mi Felicidad ☀️", color: "#ffe082", radius: 160, speed: 0.011, angle: 4.5, tilt: -0.3, size: 7 },
+      { text: "Eres mi Luz 🕯️", color: "#ffff8d", radius: 270, speed: 0.007, angle: 2.1, tilt: 0.25, size: 8 },
+      { text: "Te Amo 💓", color: "#ff8a80", radius: 110, speed: 0.015, angle: 5.2, tilt: -0.15, size: 9 },
+      { text: "Mi Regalo 🎁", color: "#a7ffeb", radius: 330, speed: 0.004, angle: 3.1, tilt: 0.35, size: 7 },
+      { text: "Mi Sol 🌼", color: "#ffb300", radius: 190, speed: 0.008, angle: 1.8, tilt: -0.25, size: 8 }
+    ];
+
+    // Estrellas de fondo
+    const numStars = 400;
+    const stars = [];
+    for (let i = 0; i < numStars; i++) {
+      stars.push({
+        x: (Math.random() - 0.5) * 1600,
+        y: (Math.random() - 0.5) * 1600,
+        z: (Math.random() - 0.5) * 1600,
+        size: Math.random() * 1.8 + 0.5,
+        alpha: Math.random() * 0.8 + 0.2,
+        twinkle: Math.random() * 0.02 + 0.005
+      });
+    }
+
+    // Polvo galáctico en espiral
+    const numDust = 600;
+    const dust = [];
+    for (let i = 0; i < numDust; i++) {
+      const arm = i % 3;
+      const dist = Math.random() * 380 + 30;
+      const angle = dist * 0.012 + (arm * (Math.PI * 2 / 3)) + (Math.random() - 0.5) * 0.5;
+      dust.push({
+        dist: dist,
+        angle: angle,
+        y: (Math.random() - 0.5) * (40 + dist * 0.1),
+        size: Math.random() * 2 + 1,
+        color: arm === 0 ? "rgba(255, 213, 79, " : (arm === 1 ? "rgba(255, 179, 0, " : "rgba(255, 248, 225, "),
+        alpha: Math.random() * 0.6 + 0.1
+      });
+    }
+
+    // Rotación 3D e interactividad
+    let rotX = 0.4;
+    let rotY = 0;
+    let targetRotX = 0.4;
+    let targetRotY = 0;
+    let isDragging = false;
+    let prevMouseX = 0;
+    let prevMouseY = 0;
+
+    function onStart(e) {
+      isDragging = true;
+      const p = e.touches ? e.touches[0] : e;
+      prevMouseX = p.clientX;
+      prevMouseY = p.clientY;
+    }
+
+    function onMove(e) {
+      if (!isDragging) return;
+      const p = e.touches ? e.touches[0] : e;
+      const deltaX = p.clientX - prevMouseX;
+      const deltaY = p.clientY - prevMouseY;
+      targetRotY += deltaX * 0.005;
+      targetRotX += deltaY * 0.005;
+      prevMouseX = p.clientX;
+      prevMouseY = p.clientY;
+    }
+
+    function onEnd() {
+      isDragging = false;
+    }
+
+    window.addEventListener('mousedown', onStart);
+    window.addEventListener('mousemove', onMove);
+    window.addEventListener('mouseup', onEnd);
+    window.addEventListener('touchstart', onStart);
+    window.addEventListener('touchmove', onMove);
+    window.addEventListener('touchend', onEnd);
+
+    // Detección al tocar planetas
+    let clickedPlanetText = "";
+    let popupTimer = 0;
+
+    window.addEventListener('click', (e) => {
+      const mouseX = e.clientX;
+      const mouseY = e.clientY;
+
+      for (let p of wordList) {
+        if (p.projX && p.projY) {
+          const dx = mouseX - p.projX;
+          const dy = mouseY - p.projY;
+          if (Math.sqrt(dx * dx + dy * dy) < 35) {
+            clickedPlanetText = p.text;
+            popupTimer = 120;
+            createSparkles(p.projX, p.projY, p.color);
+            break;
+          }
+        }
+      }
+    });
+
+    const sparkles = [];
+    function createSparkles(x, y, color) {
+      for (let i = 0; i < 20; i++) {
+        sparkles.push({
+          x: x, y: y,
+          vx: (Math.random() - 0.5) * 6,
+          vy: (Math.random() - 0.5) * 6,
+          size: Math.random() * 4 + 2,
+          color: color,
+          alpha: 1
+        });
+      }
+    }
+
+    // Proyección 3D a 2D
+    function project3D(x, y, z) {
+      let x1 = x * Math.cos(rotY) - z * Math.sin(rotY);
+      let z1 = x * Math.sin(rotY) + z * Math.cos(rotY);
+
+      let y2 = y * Math.cos(rotX) - z1 * Math.sin(rotX);
+      let z2 = y * Math.sin(rotX) + z1 * Math.cos(rotX);
+
+      const fov = 450;
+      const scale = fov / (fov + z2 + 500);
+      return {
+        x: width / 2 + x1 * scale,
+        y: height / 2 + y2 * scale,
+        scale: scale,
+        z: z2
+      };
+    }
+
+    // Loop de renderizado
+    function render() {
+      rotX += (targetRotX - rotX) * 0.08;
+      rotY += (targetRotY - rotY) * 0.08;
+
+      if (!isDragging) {
+        targetRotY += 0.002;
+      }
+
+      ctx.clearRect(0, 0, width, height);
+
+      // Sol central (Flor Amarilla de la galaxia)
+      const sunProj = project3D(0, 0, 0);
+      const sunGlow = ctx.createRadialGradient(sunProj.x, sunProj.y, 0, sunProj.x, sunProj.y, 70 * sunProj.scale);
+      sunGlow.addColorStop(0, "rgba(255, 235, 59, 1)");
+      sunGlow.addColorStop(0.4, "rgba(255, 179, 0, 0.6)");
+      sunGlow.addColorStop(1, "rgba(255, 179, 0, 0)");
+      ctx.fillStyle = sunGlow;
+      ctx.beginPath();
+      ctx.arc(sunProj.x, sunProj.y, 70 * sunProj.scale, 0, Math.PI * 2);
+      ctx.fill();
+
+      ctx.fillStyle = "#fff176";
+      ctx.beginPath();
+      ctx.arc(sunProj.x, sunProj.y, 18 * sunProj.scale, 0, Math.PI * 2);
+      ctx.fill();
+
+      // Estrellas
+      for (let s of stars) {
+        s.alpha += s.twinkle;
+        if (s.alpha > 1 || s.alpha < 0.2) s.twinkle = -s.twinkle;
+        const p = project3D(s.x, s.y, s.z);
+        if (p.scale > 0) {
+          ctx.fillStyle = `rgba(255, 255, 255, ${s.alpha * Math.min(1, p.scale)})`;
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, s.size * p.scale, 0, Math.PI * 2);
+          ctx.fill();
+        }
+      }
+
+      // Polvo galáctico
+      for (let d of dust) {
+        d.angle += 0.001;
+        const x = Math.cos(d.angle) * d.dist;
+        const z = Math.sin(d.angle) * d.dist;
+        const p = project3D(x, d.y, z);
+        if (p.scale > 0) {
+          ctx.fillStyle = d.color + (d.alpha * p.scale) + ")";
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, d.size * p.scale, 0, Math.PI * 2);
+          ctx.fill();
+        }
+      }
+
+      // Planetas y textos
+      const renderables = [];
+      for (let p of wordList) {
+        p.angle += p.speed;
+        const x = Math.cos(p.angle) * p.radius;
+        const z = Math.sin(p.angle) * p.radius;
+        const y = Math.sin(p.angle * 2) * (p.radius * p.tilt);
+        const proj = project3D(x, y, z);
+
+        p.projX = proj.x;
+        p.projY = proj.y;
+
+        renderables.push({ planet: p, proj: proj });
+      }
+
+      renderables.sort((a, b) => b.proj.z - a.proj.z);
+
+      for (let item of renderables) {
+        const p = item.planet;
+        const proj = item.proj;
+
+        if (proj.scale <= 0) continue;
+
+        // Órbita
+        ctx.strokeStyle = "rgba(255, 224, 130, 0.06)";
+        ctx.lineWidth = 1;
+        ctx.beginPath();
+        for (let a = 0; a <= Math.PI * 2; a += 0.2) {
+          const ox = Math.cos(a) * p.radius;
+          const oz = Math.sin(a) * p.radius;
+          const oy = Math.sin(a * 2) * (p.radius * p.tilt);
+          const op = project3D(ox, oy, oz);
+          if (a === 0) ctx.moveTo(op.x, op.y);
+          else ctx.lineTo(op.x, op.y);
+        }
+        ctx.stroke();
+
+        // Brillo planeta
+        const pGlow = ctx.createRadialGradient(proj.x, proj.y, 0, proj.x, proj.y, p.size * 2.5 * proj.scale);
+        pGlow.addColorStop(0, p.color);
+        pGlow.addColorStop(1, "rgba(0,0,0,0)");
+        ctx.fillStyle = pGlow;
+        ctx.beginPath();
+        ctx.arc(proj.x, proj.y, p.size * 2.5 * proj.scale, 0, Math.PI * 2);
+        ctx.fill();
+
+        ctx.fillStyle = "#ffffff";
+        ctx.beginPath();
+        ctx.arc(proj.x, proj.y, p.size * 0.8 * proj.scale, 0, Math.PI * 2);
+        ctx.fill();
+
+        // Texto flotante
+        const fontSize = Math.max(10, 14 * proj.scale);
+        ctx.font = `600 ${fontSize}px 'Poppins', sans-serif`;
+        ctx.fillStyle = p.color;
+        ctx.textAlign = "center";
+        ctx.shadowColor = "rgba(0,0,0,0.8)";
+        ctx.shadowBlur = 6;
+        ctx.fillText(p.text, proj.x, proj.y - (p.size * proj.scale + 8));
+        ctx.shadowBlur = 0;
+      }
+
+      // Destellos
+      for (let i = sparkles.length - 1; i >= 0; i--) {
+        const sp = sparkles[i];
+        sp.x += sp.vx;
+        sp.y += sp.vy;
+        sp.alpha -= 0.02;
+        if (sp.alpha <= 0) {
+          sparkles.splice(i, 1);
+          continue;
+        }
+        ctx.fillStyle = sp.color;
+        ctx.globalAlpha = sp.alpha;
+        ctx.beginPath();
+        ctx.arc(sp.x, sp.y, sp.size, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.globalAlpha = 1;
+      }
+
+      // Texto al presionar planeta
+      if (popupTimer > 0) {
+        popupTimer--;
+        ctx.font = "bold 1.2rem 'Caveat', cursive";
+        ctx.fillStyle = "#ffe082";
+        ctx.textAlign = "center";
+        ctx.shadowColor = "rgba(0,0,0,0.9)";
+        ctx.shadowBlur = 10;
+        ctx.fillText(`✨ ${clickedPlanetText} ✨`, width / 2, height / 2 - 120);
+        ctx.shadowBlur = 0;
+      }
+
+      requestAnimationFrame(render);
+    }
+
+    render();
+
+    // Lógica del Modal
+    function openCarta() {
+      document.getElementById('modalOverlay').classList.add('active');
+      for (let i = 0; i < 30; i++) {
+        setTimeout(crearPetalo, i * 100);
+      }
+    }
+
+    function closeCarta() {
+      document.getElementById('modalOverlay').classList.remove('active');
+    }
+
+    function crearPetalo() {
+      const petalo = document.createElement('div');
+      petalo.classList.add('petal');
+      const simbolos = ['🌼', '🌻', '✨', '💛', '⭐', '🪐'];
+      petalo.innerText = simbolos[Math.floor(Math.random() * simbolos.length)];
+      petalo.style.left = Math.random() * 100 + 'vw';
+      petalo.style.animationDuration = (Math.random() * 3 + 3) + 's';
+      petalo.style.fontSize = (Math.random() * 14 + 16) + 'px';
+      document.body.appendChild(petalo);
+
+      setTimeout(() => petalo.remove(), 6000);
+    }
+  </script>
+</body>
+</html>
