@@ -2,73 +2,72 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-  <title>Nuestra Galaxia de Amor 💛</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Flores Amarillas Para Ti 💛</title>
   <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
   <style>
     * {
       box-sizing: border-box;
       margin: 0;
       padding: 0;
-      user-select: none;
-      -webkit-user-select: none;
     }
-    body, html {
-      width: 100%;
-      height: 100%;
-      overflow: hidden;
-      background: #05030a;
+    body {
+      /* Fondo animado */
+      background: linear-gradient(-45deg, #fffde7, #fff9c4, #fff176, #ffecb3);
+      background-size: 400% 400%;
+      animation: gradientBG 10s ease infinite;
       font-family: 'Poppins', sans-serif;
-      color: #fff;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      overflow-x: hidden;
+      padding: 20px;
+      color: #4a3b00;
     }
-    #canvas-container {
-      position: absolute;
-      top: 0;
-      left: 0;
+    @keyframes gradientBG {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+    .container {
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(10px);
+      border-radius: 24px;
+      padding: 35px 25px;
+      max-width: 440px;
       width: 100%;
-      height: 100%;
-      z-index: 1;
-    }
-    canvas {
-      width: 100%;
-      height: 100%;
-      display: block;
-    }
-    /* Interfaz de usuario */
-    .ui-header {
-      position: absolute;
-      top: 25px;
-      left: 50%;
-      transform: translateX(-50%);
-      z-index: 10;
       text-align: center;
-      width: 90%;
-      max-width: 500px;
-      pointer-events: none;
+      box-shadow: 0 15px 35px rgba(218, 165, 32, 0.25);
+      border: 2px solid #ffe082;
+      position: relative;
+      z-index: 10;
     }
-    .ui-header h1 {
+    h1 {
       font-family: 'Caveat', cursive;
-      font-size: 2.5rem;
-      color: #ffe082;
-      text-shadow: 0 0 15px rgba(255, 213, 79, 0.8), 0 0 30px rgba(255, 179, 0, 0.5);
+      font-size: 2.6rem;
+      color: #d89b00;
+      margin-bottom: 10px;
+      line-height: 1.1;
     }
-    .ui-header p {
-      font-size: 0.85rem;
-      color: #d1c4e9;
-      opacity: 0.9;
-      margin-top: 4px;
+    p.subtitle {
+      font-size: 0.95rem;
+      color: #6c5b10;
+      margin-bottom: 25px;
+      line-height: 1.5;
     }
-    .ui-footer {
-      position: absolute;
-      bottom: 30px;
-      left: 50%;
-      transform: translateX(-50%);
-      z-index: 10;
-      text-align: center;
-      width: 90%;
-      max-width: 400px;
+    .flower-illustration {
+      width: 140px;
+      height: 140px;
+      margin: 0 auto 20px;
+      /* Animación de balanceo de la flor */
+      animation: sway 3s ease-in-out infinite alternate;
     }
-    .btn-main {
+    @keyframes sway {
+      0% { transform: rotate(-8deg) scale(1); }
+      100% { transform: rotate(8deg) scale(1.05); }
+    }
+    .btn-action {
       background: linear-gradient(45deg, #ffd54f, #ffb300);
       border: none;
       color: #3e2723;
@@ -78,467 +77,167 @@
       padding: 14px 28px;
       border-radius: 50px;
       cursor: pointer;
-      box-shadow: 0 0 20px rgba(255, 213, 79, 0.6), 0 0 40px rgba(255, 179, 0, 0.4);
-      animation: pulseGlow 2s infinite;
-      transition: transform 0.2s ease;
+      /* Botón que brilla */
+      animation: glowing 2s infinite;
+      transition: all 0.3s ease;
+      outline: none;
     }
-    @keyframes pulseGlow {
-      0%, 100% { transform: scale(1); box-shadow: 0 0 20px rgba(255, 213, 79, 0.6); }
-      50% { transform: scale(1.05); box-shadow: 0 0 35px rgba(255, 213, 79, 0.9); }
+    @keyframes glowing {
+      0% { box-shadow: 0 0 5px #ffca28; }
+      50% { box-shadow: 0 0 20px #ffb300, 0 0 30px #ffca28; }
+      100% { box-shadow: 0 0 5px #ffca28; }
     }
-    .btn-main:active {
-      transform: scale(0.98);
+    .btn-action:hover {
+      transform: translateY(-3px) scale(1.05);
     }
-
-    /* Modal / Carta de Amor */
-    .modal-overlay {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(5, 3, 10, 0.85);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-      z-index: 100;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity 0.5s ease;
-      padding: 20px;
+    .btn-action:active {
+      transform: translateY(1px);
     }
-    .modal-overlay.active {
-      opacity: 1;
-      pointer-events: auto;
-    }
-    .modal-card {
-      background: rgba(30, 20, 50, 0.85);
-      border: 2px solid #ffe082;
-      box-shadow: 0 0 30px rgba(255, 224, 130, 0.3), inset 0 0 20px rgba(255, 224, 130, 0.1);
-      border-radius: 24px;
-      padding: 30px 25px;
-      max-width: 440px;
-      width: 100%;
-      max-height: 85vh;
-      overflow-y: auto;
-      text-align: center;
-      transform: scale(0.8) translateY(20px);
-      transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-      position: relative;
-    }
-    .modal-overlay.active .modal-card {
-      transform: scale(1) translateY(0);
-    }
-    .close-btn {
-      position: absolute;
-      top: 15px;
-      right: 18px;
-      background: rgba(255, 255, 255, 0.1);
-      border: none;
-      color: #ffe082;
-      font-size: 1.5rem;
-      width: 36px;
-      height: 36px;
-      border-radius: 50%;
-      cursor: pointer;
-    }
-    .modal-card h2 {
-      font-family: 'Caveat', cursive;
-      font-size: 2.4rem;
-      color: #ffd54f;
-      margin-bottom: 15px;
-      text-shadow: 0 0 10px rgba(255, 213, 79, 0.5);
-    }
-    .modal-card p {
-      font-size: 0.95rem;
-      line-height: 1.7;
-      color: #f3e5f5;
+    .card-message {
+      display: none;
+      margin-top: 25px;
+      padding: 22px;
+      background: #fffbe6;
+      border-left: 4px solid #ffca28;
+      border-radius: 14px;
       text-align: left;
+      /* Aparición suave desde abajo */
+      animation: slideUpFade 1s ease forwards;
+    }
+    @keyframes slideUpFade {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .card-message h2 {
+      font-family: 'Caveat', cursive;
+      font-size: 2rem;
+      color: #b78103;
+      margin-bottom: 12px;
+    }
+    .card-message p {
+      font-size: 0.95rem;
+      line-height: 1.6;
+      color: #5d4037;
     }
     .highlight {
-      color: #ffe082;
       font-weight: 600;
+      color: #d84315;
     }
-    .signature {
-      margin-top: 20px;
-      font-family: 'Caveat', cursive;
-      font-size: 1.8rem;
-      color: #ffb300;
-      text-align: center;
+    .footer-heart {
+      margin-top: 22px;
+      font-size: 0.85rem;
+      color: #a08218;
+      animation: heartbeat 1.5s infinite;
     }
-
-    /* Pétalos flotando en el espacio */
+    @keyframes heartbeat {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.1); color: #d32f2f; }
+    }
     .petal {
       position: fixed;
       top: -10%;
       pointer-events: none;
-      z-index: 101;
+      z-index: 1;
       animation: fall linear forwards;
     }
     @keyframes fall {
       to {
-        transform: translateY(110vh) rotate(720deg);
+        transform: translateY(105vh) rotate(720deg);
       }
     }
   </style>
 </head>
 <body>
 
-  <div id="canvas-container">
-    <canvas id="galaxyCanvas"></canvas>
-  </div>
+  <div class="container">
+    <h1>¡Feliz Día! 🌼</h1>
+    <p class="subtitle">Estas no se marchitan y están hechas especialmente para ti.</p>
 
-  <div class="ui-header">
-    <h1>Nuestra Galaxia 🪐✨</h1>
-    <p>Gira el universo con tu dedo y toca los planetas 💛</p>
-  </div>
+    <!-- Ilustración de Flor -->
+    <div class="flower-illustration">
+      <svg viewBox="0 0 100 100" width="100%" height="100%">
+        <path d="M50,50 Q48,75 50,95" stroke="#7cb342" stroke-width="4" fill="none"/>
+        <path d="M50,70 Q35,65 30,55 Q42,58 50,70" fill="#8bc34a"/>
+        <path d="M50,78 Q65,73 70,63 Q58,66 50,78" fill="#8bc34a"/>
+        <g fill="#ffd54f" stroke="#fbc02d" stroke-width="1">
+          <circle cx="50" cy="30" r="12" />
+          <circle cx="64" cy="36" r="12" />
+          <circle cx="70" cy="50" r="12" />
+          <circle cx="64" cy="64" r="12" />
+          <circle cx="50" cy="70" r="12" />
+          <circle cx="36" cy="64" r="12" />
+          <circle cx="30" cy="50" r="12" />
+          <circle cx="36" cy="36" r="12" />
+        </g>
+        <g fill="#ffe082">
+          <circle cx="50" cy="33" r="10" />
+          <circle cx="62" cy="38" r="10" />
+          <circle cx="67" cy="50" r="10" />
+          <circle cx="62" cy="62" r="10" />
+          <circle cx="50" cy="67" r="10" />
+          <circle cx="38" cy="62" r="10" />
+          <circle cx="33" cy="50" r="10" />
+          <circle cx="38" cy="38" r="10" />
+        </g>
+        <circle cx="50" cy="50" r="12" fill="#ff8f00" />
+        <circle cx="50" cy="50" r="9" fill="#ff6f00" />
+      </svg>
+    </div>
 
-  <div class="ui-footer">
-    <button class="btn-main" onclick="openCarta()">Toca aquí mi amor 🌼</button>
-  </div>
+    <button class="btn-action" onclick="mostrarSorpresa()" id="btn-regalo">Toca aquí mi amor 💛</button>
 
-  <!-- Modal / Carta de Amor -->
-  <div class="modal-overlay" id="modalOverlay">
-    <div class="modal-card">
-      <button class="close-btn" onclick="closeCarta()">×</button>
+    <div class="card-message" id="mensaje">
       <h2>Para mi niña hermosa ✨</h2>
       <p>
-        ¡Feliz Día de las Flores Amarillas! 🌼<br><br>
-        No quería dejar pasar este día sin entregarte tus flores amarillas, así que te construí un universo entero donde cada estrella y planeta lleva lo que siento por ti.<br><br>
-        Desde que llegaste a mi vida me has hecho la persona más feliz del mundo. Sé que llevamos poco tiempo, pero <span class="highlight">siento con todo mi corazón que eres el amor de mi vida</span> y quiero estar siempre contigo.<br><br>
-        Espero que esta galaxia hecha a mano te saque una sonrisa tan hermosa como tú.
+        No quería dejar pasar este día sin entregarte tus flores amarillas.<br><br>
+        Desde que llegaste a mi vida me has hecho la persona más feliz del mundo. Sé que llevamos poco tiempo, pero <strong>siento con todo mi corazón que eres el amor de mi vida</strong> y quiero estar siempre contigo.<br><br>
+        Espero que esta pequeña sorpresa te saque una sonrisa tan hermosa que tienes y sabes que me encanta. <br><br>
+        <span class="highlight">Te quiero muchísimo.</span> 🌻
       </p>
-      <div class="signature">Te amo muchísimo. 🌻</div>
+    </div>
+
+    <div class="footer-heart">
+      Hecho con mucho amor para ti ❤️
     </div>
   </div>
 
   <script>
-    const canvas = document.getElementById('galaxyCanvas');
-    const ctx = canvas.getContext('2d');
-
-    let width, height;
-    function resize() {
-      width = canvas.width = window.innerWidth;
-      height = canvas.height = window.innerHeight;
-    }
-    window.addEventListener('resize', resize);
-    resize();
-
-    // Palabras / Planetas flotantes
-    const wordList = [
-      { text: "Mi Amor 💓", color: "#ff80ab", radius: 180, speed: 0.008, angle: 0, tilt: 0.3, size: 7 },
-      { text: "Mi Universo ", color: "#80d8ff", radius: 240, speed: 0.006, angle: 1.2, tilt: -0.2, size: 9 },
-      { text: "Amor de mi vida ", color: "#ffd54f", radius: 140, speed: 0.012, angle: 2.5, tilt: 0.4, size: 10 },
-      { text: "Mi Niña Hermosa ", color: "#ea80fc", radius: 300, speed: 0.005, angle: 0.8, tilt: -0.4, size: 8 },
-      { text: "Para siempre 🤞🏽 ", color: "#b9f6ca", radius: 210, speed: 0.009, angle: 3.8, tilt: 0.1, size: 8 },
-      { text: "Mi Felicidad ", color: "#ffe082", radius: 160, speed: 0.011, angle: 4.5, tilt: -0.3, size: 7 },
-      { text: "Eres mi Luz ", color: "#ffff8d", radius: 270, speed: 0.007, angle: 2.1, tilt: 0.25, size: 8 },
-      { text: "Te quiero 💓", color: "#ff8a80", radius: 110, speed: 0.015, angle: 5.2, tilt: -0.15, size: 9 },
-      { text: "Mi negrita ", color: "#a7ffeb", radius: 330, speed: 0.004, angle: 3.1, tilt: 0.35, size: 7 },
-      { text: "Mia mia", color: "#ffb300", radius: 190, speed: 0.008, angle: 1.8, tilt: -0.25, size: 8 }
-    ];
-
-    // Estrellas de fondo
-    const numStars = 400;
-    const stars = [];
-    for (let i = 0; i < numStars; i++) {
-      stars.push({
-        x: (Math.random() - 0.5) * 1600,
-        y: (Math.random() - 0.5) * 1600,
-        z: (Math.random() - 0.5) * 1600,
-        size: Math.random() * 1.8 + 0.5,
-        alpha: Math.random() * 0.8 + 0.2,
-        twinkle: Math.random() * 0.02 + 0.005
-      });
-    }
-
-    // Polvo galáctico en espiral
-    const numDust = 600;
-    const dust = [];
-    for (let i = 0; i < numDust; i++) {
-      const arm = i % 3;
-      const dist = Math.random() * 380 + 30;
-      const angle = dist * 0.012 + (arm * (Math.PI * 2 / 3)) + (Math.random() - 0.5) * 0.5;
-      dust.push({
-        dist: dist,
-        angle: angle,
-        y: (Math.random() - 0.5) * (40 + dist * 0.1),
-        size: Math.random() * 2 + 1,
-        color: arm === 0 ? "rgba(255, 213, 79, " : (arm === 1 ? "rgba(255, 179, 0, " : "rgba(255, 248, 225, "),
-        alpha: Math.random() * 0.6 + 0.1
-      });
-    }
-
-    // Rotación 3D e interactividad
-    let rotX = 0.4;
-    let rotY = 0;
-    let targetRotX = 0.4;
-    let targetRotY = 0;
-    let isDragging = false;
-    let prevMouseX = 0;
-    let prevMouseY = 0;
-
-    function onStart(e) {
-      isDragging = true;
-      const p = e.touches ? e.touches[0] : e;
-      prevMouseX = p.clientX;
-      prevMouseY = p.clientY;
-    }
-
-    function onMove(e) {
-      if (!isDragging) return;
-      const p = e.touches ? e.touches[0] : e;
-      const deltaX = p.clientX - prevMouseX;
-      const deltaY = p.clientY - prevMouseY;
-      targetRotY += deltaX * 0.005;
-      targetRotX += deltaY * 0.005;
-      prevMouseX = p.clientX;
-      prevMouseY = p.clientY;
-    }
-
-    function onEnd() {
-      isDragging = false;
-    }
-
-    window.addEventListener('mousedown', onStart);
-    window.addEventListener('mousemove', onMove);
-    window.addEventListener('mouseup', onEnd);
-    window.addEventListener('touchstart', onStart);
-    window.addEventListener('touchmove', onMove);
-    window.addEventListener('touchend', onEnd);
-
-    // Detección al tocar planetas
-    let clickedPlanetText = "";
-    let popupTimer = 0;
-
-    window.addEventListener('click', (e) => {
-      const mouseX = e.clientX;
-      const mouseY = e.clientY;
-
-      for (let p of wordList) {
-        if (p.projX && p.projY) {
-          const dx = mouseX - p.projX;
-          const dy = mouseY - p.projY;
-          if (Math.sqrt(dx * dx + dy * dy) < 35) {
-            clickedPlanetText = p.text;
-            popupTimer = 120;
-            createSparkles(p.projX, p.projY, p.color);
-            break;
-          }
-        }
-      }
-    });
-
-    const sparkles = [];
-    function createSparkles(x, y, color) {
-      for (let i = 0; i < 20; i++) {
-        sparkles.push({
-          x: x, y: y,
-          vx: (Math.random() - 0.5) * 6,
-          vy: (Math.random() - 0.5) * 6,
-          size: Math.random() * 4 + 2,
-          color: color,
-          alpha: 1
-        });
-      }
-    }
-
-    // Proyección 3D a 2D
-    function project3D(x, y, z) {
-      let x1 = x * Math.cos(rotY) - z * Math.sin(rotY);
-      let z1 = x * Math.sin(rotY) + z * Math.cos(rotY);
-
-      let y2 = y * Math.cos(rotX) - z1 * Math.sin(rotX);
-      let z2 = y * Math.sin(rotX) + z1 * Math.cos(rotX);
-
-      const fov = 450;
-      const scale = fov / (fov + z2 + 500);
-      return {
-        x: width / 2 + x1 * scale,
-        y: height / 2 + y2 * scale,
-        scale: scale,
-        z: z2
-      };
-    }
-
-    // Loop de renderizado
-    function render() {
-      rotX += (targetRotX - rotX) * 0.08;
-      rotY += (targetRotY - rotY) * 0.08;
-
-      if (!isDragging) {
-        targetRotY += 0.002;
-      }
-
-      ctx.clearRect(0, 0, width, height);
-
-      // Sol central (Flor Amarilla de la galaxia)
-      const sunProj = project3D(0, 0, 0);
-      const sunGlow = ctx.createRadialGradient(sunProj.x, sunProj.y, 0, sunProj.x, sunProj.y, 70 * sunProj.scale);
-      sunGlow.addColorStop(0, "rgba(255, 235, 59, 1)");
-      sunGlow.addColorStop(0.4, "rgba(255, 179, 0, 0.6)");
-      sunGlow.addColorStop(1, "rgba(255, 179, 0, 0)");
-      ctx.fillStyle = sunGlow;
-      ctx.beginPath();
-      ctx.arc(sunProj.x, sunProj.y, 70 * sunProj.scale, 0, Math.PI * 2);
-      ctx.fill();
-
-      ctx.fillStyle = "#fff176";
-      ctx.beginPath();
-      ctx.arc(sunProj.x, sunProj.y, 18 * sunProj.scale, 0, Math.PI * 2);
-      ctx.fill();
-
-      // Estrellas
-      for (let s of stars) {
-        s.alpha += s.twinkle;
-        if (s.alpha > 1 || s.alpha < 0.2) s.twinkle = -s.twinkle;
-        const p = project3D(s.x, s.y, s.z);
-        if (p.scale > 0) {
-          ctx.fillStyle = `rgba(255, 255, 255, ${s.alpha * Math.min(1, p.scale)})`;
-          ctx.beginPath();
-          ctx.arc(p.x, p.y, s.size * p.scale, 0, Math.PI * 2);
-          ctx.fill();
-        }
-      }
-
-      // Polvo galáctico
-      for (let d of dust) {
-        d.angle += 0.001;
-        const x = Math.cos(d.angle) * d.dist;
-        const z = Math.sin(d.angle) * d.dist;
-        const p = project3D(x, d.y, z);
-        if (p.scale > 0) {
-          ctx.fillStyle = d.color + (d.alpha * p.scale) + ")";
-          ctx.beginPath();
-          ctx.arc(p.x, p.y, d.size * p.scale, 0, Math.PI * 2);
-          ctx.fill();
-        }
-      }
-
-      // Planetas y textos
-      const renderables = [];
-      for (let p of wordList) {
-        p.angle += p.speed;
-        const x = Math.cos(p.angle) * p.radius;
-        const z = Math.sin(p.angle) * p.radius;
-        const y = Math.sin(p.angle * 2) * (p.radius * p.tilt);
-        const proj = project3D(x, y, z);
-
-        p.projX = proj.x;
-        p.projY = proj.y;
-
-        renderables.push({ planet: p, proj: proj });
-      }
-
-      renderables.sort((a, b) => b.proj.z - a.proj.z);
-
-      for (let item of renderables) {
-        const p = item.planet;
-        const proj = item.proj;
-
-        if (proj.scale <= 0) continue;
-
-        // Órbita
-        ctx.strokeStyle = "rgba(255, 224, 130, 0.06)";
-        ctx.lineWidth = 1;
-        ctx.beginPath();
-        for (let a = 0; a <= Math.PI * 2; a += 0.2) {
-          const ox = Math.cos(a) * p.radius;
-          const oz = Math.sin(a) * p.radius;
-          const oy = Math.sin(a * 2) * (p.radius * p.tilt);
-          const op = project3D(ox, oy, oz);
-          if (a === 0) ctx.moveTo(op.x, op.y);
-          else ctx.lineTo(op.x, op.y);
-        }
-        ctx.stroke();
-
-        // Brillo planeta
-        const pGlow = ctx.createRadialGradient(proj.x, proj.y, 0, proj.x, proj.y, p.size * 2.5 * proj.scale);
-        pGlow.addColorStop(0, p.color);
-        pGlow.addColorStop(1, "rgba(0,0,0,0)");
-        ctx.fillStyle = pGlow;
-        ctx.beginPath();
-        ctx.arc(proj.x, proj.y, p.size * 2.5 * proj.scale, 0, Math.PI * 2);
-        ctx.fill();
-
-        ctx.fillStyle = "#ffffff";
-        ctx.beginPath();
-        ctx.arc(proj.x, proj.y, p.size * 0.8 * proj.scale, 0, Math.PI * 2);
-        ctx.fill();
-
-        // Texto flotante
-        const fontSize = Math.max(10, 14 * proj.scale);
-        ctx.font = `600 ${fontSize}px 'Poppins', sans-serif`;
-        ctx.fillStyle = p.color;
-        ctx.textAlign = "center";
-        ctx.shadowColor = "rgba(0,0,0,0.8)";
-        ctx.shadowBlur = 6;
-        ctx.fillText(p.text, proj.x, proj.y - (p.size * proj.scale + 8));
-        ctx.shadowBlur = 0;
-      }
-
-      // Destellos
-      for (let i = sparkles.length - 1; i >= 0; i--) {
-        const sp = sparkles[i];
-        sp.x += sp.vx;
-        sp.y += sp.vy;
-        sp.alpha -= 0.02;
-        if (sp.alpha <= 0) {
-          sparkles.splice(i, 1);
-          continue;
-        }
-        ctx.fillStyle = sp.color;
-        ctx.globalAlpha = sp.alpha;
-        ctx.beginPath();
-        ctx.arc(sp.x, sp.y, sp.size, 0, Math.PI * 2);
-        ctx.fill();
-        ctx.globalAlpha = 1;
-      }
-
-      // Texto al presionar planeta
-      if (popupTimer > 0) {
-        popupTimer--;
-        ctx.font = "bold 1.2rem 'Caveat', cursive";
-        ctx.fillStyle = "#ffe082";
-        ctx.textAlign = "center";
-        ctx.shadowColor = "rgba(0,0,0,0.9)";
-        ctx.shadowBlur = 10;
-        ctx.fillText(`✨ ${clickedPlanetText} ✨`, width / 2, height / 2 - 120);
-        ctx.shadowBlur = 0;
-      }
-
-      requestAnimationFrame(render);
-    }
-
-    render();
-
-    // Lógica del Modal
-    function openCarta() {
-      document.getElementById('modalOverlay').classList.add('active');
-      for (let i = 0; i < 30; i++) {
-        setTimeout(crearPetalo, i * 100);
-      }
-    }
-
-    function closeCarta() {
-      document.getElementById('modalOverlay').classList.remove('active');
-    }
-
     function crearPetalo() {
       const petalo = document.createElement('div');
       petalo.classList.add('petal');
-      const simbolos = ['🌼', '🌻', '✨', '💛', '⭐', '🪐'];
+      
+      const simbolos = ['🌼', '🌻', '✨', '💛', '💖'];
       petalo.innerText = simbolos[Math.floor(Math.random() * simbolos.length)];
+      
       petalo.style.left = Math.random() * 100 + 'vw';
-      petalo.style.animationDuration = (Math.random() * 3 + 3) + 's';
+      petalo.style.animationDuration = (Math.random() * 3 + 2.5) + 's';
       petalo.style.fontSize = (Math.random() * 14 + 16) + 'px';
+      
       document.body.appendChild(petalo);
 
-      setTimeout(() => petalo.remove(), 6000);
+      setTimeout(() => {
+        petalo.remove();
+      }, 5500);
+    }
+
+    function mostrarSorpresa() {
+      const msg = document.getElementById('mensaje');
+      const btn = document.getElementById('btn-regalo');
+      
+      // Ocultar botón y mostrar mensaje
+      btn.style.display = 'none';
+      msg.style.display = 'block';
+
+      // Lluvia inicial intensa de flores y corazones
+      for (let i = 0; i < 40; i++) {
+        setTimeout(crearPetalo, i * 80);
+      }
+
+      // Caída continua y suave
+      setInterval(crearPetalo, 400);
     }
   </script>
 </body>
 </html>
+
  
